@@ -73,7 +73,7 @@ declare enum ErrorCode {
      * available internally for testing purposes.
      */
     COMMAND_UNAVAILABLE = 108,
-    /** You must call Parse.initialize before using the Parse library. */
+    /** You must call initialize before using the Parse library. */
     NOT_INITIALIZED = 109,
     /** Error code indicating that a field was set to an inconsistent type. */
     INCORRECT_TYPE = 111,
@@ -275,7 +275,7 @@ declare global {
             progress?: Function | undefined;
         }
 
-        interface SuccessFailureOptions extends SuccessOption, ErrorOption {}
+        interface SuccessFailureOptions extends SuccessOption, ErrorOption { }
 
         interface SignUpOptions {
             useMasterKey?: boolean | undefined;
@@ -306,10 +306,10 @@ declare global {
          * feat: Add option to return raw json from queries
          */
         interface RawJSONOptions {
-            /** (3.0.0+) json: Return raw json without converting to Parse.Object */
+            /** (3.0.0+) json: Return raw json without converting to Object */
             json?: boolean;
         }
-        interface ScopeOptions extends SessionTokenOption, UseMasterKeyOption {}
+        interface ScopeOptions extends SessionTokenOption, UseMasterKeyOption { }
 
         interface SilentOption {
             /**
@@ -370,14 +370,14 @@ declare global {
         /**
          * Creates a new ACL.
          * If no argument is given, the ACL has no permissions for anyone.
-         * If the argument is a Parse.User, the ACL will have read and write
+         * If the argument is a User, the ACL will have read and write
          *   permission for only that user.
          * If the argument is any other JSON object, that object will be interpretted
          *   as a serialized ACL created with toJSON().
-         * @see Parse.Object#setACL
+         * @see Object#setACL
          *
          * <p>An ACL, or Access Control List can be added to any
-         * <code>Parse.Object</code> to restrict access to only a subset of users
+         * <code>Object</code> to restrict access to only a subset of users
          * of your application.</p>
          */
         class ACL {
@@ -407,7 +407,7 @@ declare global {
         }
 
         /**
-         * A Parse.File is a local representation of a file that is saved to the Parse
+         * A File is a local representation of a file that is saved to the Parse
          * cloud.
          * @param name The file's name. This will be prefixed by a unique
          *     value once the file has finished saving. The file name must begin with
@@ -423,11 +423,11 @@ declare global {
          * if (fileUploadControl.files.length > 0) {
          *   var file = fileUploadControl.files[0];
          *   var name = "photo.jpg";
-         *   var parseFile = new Parse.File(name, file);
+         *   var parseFile = new File(name, file);
          *   parseFile.save().then(function() {
-         *     // The file has been saved to Parse.
+         *     // The file has been saved to
          *   }, function(error) {
-         *     // The file either could not be read, or could not be saved to Parse.
+         *     // The file either could not be read, or could not be saved to
          *   });
          * }</pre>
          * @param type Optional Content-Type header to use for the file. If
@@ -481,8 +481,8 @@ declare global {
          * <p>Only one key in a class may contain a GeoPoint.</p>
          *
          * <p>Example:<pre>
-         *   var point = new Parse.GeoPoint(30.0, -20.0);
-         *   var object = new Parse.Object("PlaceObject");
+         *   var point = new GeoPoint(30.0, -20.0);
+         *   var object = new Object("PlaceObject");
          *   object.set("location", point);
          *   object.save();</pre></p>
          */
@@ -502,7 +502,7 @@ declare global {
 
         /**
          * A class that is used to access all of the children of a many-to-many relationship.
-         * Each instance of Parse.Relation is associated with a particular parent object and key.
+         * Each instance of Relation is associated with a particular parent object and key.
          */
         class Relation<S extends Object = Object, T extends Object = Object> {
             parent: S;
@@ -511,13 +511,13 @@ declare global {
 
             constructor(parent?: S, key?: string);
 
-            // Adds a Parse.Object or an array of Parse.Objects to the relation.
+            // Adds a Object or an array of Objects to the relation.
             add(object: T | T[]): void;
 
-            // Returns a Parse.Query that is limited to objects in this relation.
+            // Returns a Query that is limited to objects in this relation.
             query(): Query<T>;
 
-            // Removes a Parse.Object or an array of Parse.Objects from this relation.
+            // Removes a Object or an array of Objects from this relation.
             remove(object: T | T[]): void;
 
             toJSON(): any;
@@ -532,21 +532,21 @@ declare global {
          * automatically generated and assigned for you.
          *
          * <p>You won't normally call this method directly.  It is recommended that
-         * you use a subclass of <code>Parse.Object</code> instead, created by calling
+         * you use a subclass of <code>Object</code> instead, created by calling
          * <code>extend</code>.</p>
          *
          * <p>However, if you don't want to use a subclass, or aren't sure which
          * subclass is appropriate, you can use this form:<pre>
-         *     var object = new Parse.Object("ClassName");
+         *     var object = new Object("ClassName");
          * </pre>
          * That is basically equivalent to:<pre>
-         *     var MyClass = Parse.Object.extend("ClassName");
+         *     var MyClass = Object.extend("ClassName");
          *     var object = new MyClass();
          * </pre></p>
          *
          * @param attributes The initial set of data to store in the object.
          * @param options The options for this object instance.
-         * @see Parse.Object.extend
+         * @see Object.extend
          *
          *
          * Creates a new model with defined attributes.
@@ -660,28 +660,28 @@ declare global {
         }
         interface ObjectConstructor extends ObjectStatic {
             new <T extends Attributes>(className: string, attributes: T, options?: any): Object<T>;
-            new (className?: string, attributes?: Attributes, options?: any): Object;
+            new(className?: string, attributes?: Attributes, options?: any): Object;
         }
         const Object: ObjectConstructor;
 
         namespace Object {
-            interface DestroyOptions extends SuccessFailureOptions, WaitOption, ScopeOptions {}
+            interface DestroyOptions extends SuccessFailureOptions, WaitOption, ScopeOptions { }
 
-            interface DestroyAllOptions extends BatchSizeOption, ScopeOptions {}
+            interface DestroyAllOptions extends BatchSizeOption, ScopeOptions { }
 
-            interface FetchAllOptions extends SuccessFailureOptions, ScopeOptions {}
+            interface FetchAllOptions extends SuccessFailureOptions, ScopeOptions { }
 
-            interface FetchOptions extends SuccessFailureOptions, ScopeOptions {}
+            interface FetchOptions extends SuccessFailureOptions, ScopeOptions { }
 
             interface SaveOptions
                 extends CascadeSaveOption,
-                    SuccessFailureOptions,
-                    SilentOption,
-                    ScopeOptions,
-                    ContextOption,
-                    WaitOption {}
+                SuccessFailureOptions,
+                SilentOption,
+                ScopeOptions,
+                ContextOption,
+                WaitOption { }
 
-            interface SaveAllOptions extends BatchSizeOption, ScopeOptions {}
+            interface SaveAllOptions extends BatchSizeOption, ScopeOptions { }
 
             interface SetOptions extends ErrorOption, SilentOption {
                 promise?: any;
@@ -698,7 +698,7 @@ declare global {
                 ? string
                 : T extends Array<infer R>
                 ? // This recursion is unsupported in <=3.6
-                  Array<Encode<R>>
+                Array<Encode<R>>
                 : T extends object
                 ? ToJSON<T>
                 : T;
@@ -735,62 +735,62 @@ declare global {
         }
         interface InstallationConstructor extends ObjectStatic<Installation> {
             new <T extends Attributes>(attributes: T): Installation<T>;
-            new (): Installation;
+            new(): Installation;
         }
         const Installation: InstallationConstructor;
 
         /**
-         * Creates a new parse Parse.Query for the given Parse.Object subclass.
+         * Creates a new parse Query for the given Object subclass.
          * @param objectClass -
-         *   An instance of a subclass of Parse.Object, or a Parse className string.
+         *   An instance of a subclass of Object, or a Parse className string.
          *
-         * <p>Parse.Query defines a query that is used to fetch Parse.Objects. The
+         * <p>Query defines a query that is used to fetch Objects. The
          * most common use case is finding all objects that match a query through the
          * <code>find</code> method. For example, this sample code fetches all objects
          * of class <code>MyClass</code>. It calls a different function depending on
          * whether the fetch succeeded or not.
          *
          * <pre>
-         * var query = new Parse.Query(MyClass);
+         * var query = new Query(MyClass);
          * query.find({
          *   success: function(results) {
-         *     // results is an array of Parse.Object.
+         *     // results is an array of Object.
          *   },
          *
          *   error: function(error) {
-         *     // error is an instance of Parse.Error.
+         *     // error is an instance of Error.
          *   }
          * });</pre></p>
          *
-         * <p>A Parse.Query can also be used to retrieve a single object whose id is
+         * <p>A Query can also be used to retrieve a single object whose id is
          * known, through the get method. For example, this sample code fetches an
          * object of class <code>MyClass</code> and id <code>myId</code>. It calls a
          * different function depending on whether the fetch succeeded or not.
          *
          * <pre>
-         * var query = new Parse.Query(MyClass);
+         * var query = new Query(MyClass);
          * query.get(myId, {
          *   success: function(object) {
-         *     // object is an instance of Parse.Object.
+         *     // object is an instance of Object.
          *   },
          *
          *   error: function(object, error) {
-         *     // error is an instance of Parse.Error.
+         *     // error is an instance of Error.
          *   }
          * });</pre></p>
          *
-         * <p>A Parse.Query can also be used to count the number of objects that match
+         * <p>A Query can also be used to count the number of objects that match
          * the query without retrieving all of those objects. For example, this
          * sample code counts the number of objects of the class <code>MyClass</code>
          * <pre>
-         * var query = new Parse.Query(MyClass);
+         * var query = new Query(MyClass);
          * query.count({
          *   success: function(number) {
          *     // There are number instances of MyClass.
          *   },
          *
          *   error: function(error) {
-         *     // error is an instance of Parse.Error.
+         *     // error is an instance of Error.
          *   }
          * });</pre></p>
          */
@@ -861,10 +861,10 @@ declare global {
                 value:
                     | T['attributes'][K]
                     | (T['attributes'][K] extends Object
-                          ? Pointer
-                          : T['attributes'][K] extends Array<infer E>
-                          ? E
-                          : never),
+                        ? Pointer
+                        : T['attributes'][K] extends Array<infer E>
+                        ? E
+                        : never),
             ): this;
             exclude<K extends keyof T['attributes'] | keyof BaseAttributes>(...keys: K[]): this;
             exists<K extends keyof T['attributes'] | keyof BaseAttributes>(key: K): this;
@@ -920,10 +920,10 @@ declare global {
                 value:
                     | T['attributes'][K]
                     | (T['attributes'][K] extends Object
-                          ? Pointer
-                          : T['attributes'][K] extends Array<infer E>
-                          ? E
-                          : never),
+                        ? Pointer
+                        : T['attributes'][K] extends Array<infer E>
+                        ? E
+                        : never),
             ): this;
             polygonContains<K extends keyof T['attributes'] | keyof BaseAttributes>(key: K, point: GeoPoint): this;
             select<K extends keyof T['attributes'] | keyof BaseAttributes>(...keys: K[]): this;
@@ -961,11 +961,11 @@ declare global {
         }
 
         namespace Query {
-            interface EachOptions extends SuccessFailureOptions, ScopeOptions {}
-            interface CountOptions extends SuccessFailureOptions, ScopeOptions {}
-            interface FindOptions extends SuccessFailureOptions, ScopeOptions, RawJSONOptions {}
-            interface FirstOptions extends SuccessFailureOptions, ScopeOptions, RawJSONOptions {}
-            interface GetOptions extends SuccessFailureOptions, ScopeOptions, RawJSONOptions {}
+            interface EachOptions extends SuccessFailureOptions, ScopeOptions { }
+            interface CountOptions extends SuccessFailureOptions, ScopeOptions { }
+            interface FindOptions extends SuccessFailureOptions, ScopeOptions, RawJSONOptions { }
+            interface FirstOptions extends SuccessFailureOptions, ScopeOptions, RawJSONOptions { }
+            interface GetOptions extends SuccessFailureOptions, ScopeOptions, RawJSONOptions { }
 
             // According to http://docs.parseplatform.org/rest/guide/#aggregate-queries
             interface AggregationOptions {
@@ -982,46 +982,46 @@ declare global {
                 count?: string | undefined;
                 // Lookup documentation: https://docs.mongodb.com/manual/reference/operator/aggregation/lookup/
                 lookup?:
-                    | {
-                          from: string;
-                          localField: string;
-                          foreignField: string;
-                          as: string;
-                      }
-                    | {
-                          from: string;
-                          let?: Record<string, any>;
-                          pipeline: Record<string, any>;
-                          as: string;
-                      }
-                    | undefined;
+                | {
+                    from: string;
+                    localField: string;
+                    foreignField: string;
+                    as: string;
+                }
+                | {
+                    from: string;
+                    let?: Record<string, any>;
+                    pipeline: Record<string, any>;
+                    as: string;
+                }
+                | undefined;
                 // Graph Lookup documentation: https://docs.mongodb.com/manual/reference/operator/aggregation/graphLookup/
                 graphLookup?:
-                    | {
-                          from: string;
-                          startWith?: string;
-                          connectFromField: string;
-                          connectToField: string;
-                          as: string;
-                          maxDepth?: number;
-                          depthField?: string;
-                          restrictSearchWithMatch?: Record<string, any>;
-                      }
-                    | undefined;
+                | {
+                    from: string;
+                    startWith?: string;
+                    connectFromField: string;
+                    connectToField: string;
+                    as: string;
+                    maxDepth?: number;
+                    depthField?: string;
+                    restrictSearchWithMatch?: Record<string, any>;
+                }
+                | undefined;
                 // Facet documentation: https://docs.mongodb.com/manual/reference/operator/aggregation/facet/
                 facet?: Record<string, Array<Record<string, any>>> | undefined;
                 // Unwind documentation: https://www.mongodb.com/docs/manual/reference/operator/aggregation/unwind/
                 unwind?:
-                    | {
-                          path: string;
-                          includeArrayIndex?: string;
-                          preserveNullAndEmptyArrays?: boolean;
-                      }
-                    | string
-                    | undefined;
+                | {
+                    path: string;
+                    includeArrayIndex?: string;
+                    preserveNullAndEmptyArrays?: boolean;
+                }
+                | string
+                | undefined;
             }
 
-            // According to https://parseplatform.org/Parse-SDK-JS/api/2.1.0/Parse.Query.html#fullText
+            // According to https://parseplatform.org/Parse-SDK-JS/api/2.1.0/Query.html#fullText
             interface FullTextOptions {
                 language?: string | undefined;
                 caseSensitive?: boolean | undefined;
@@ -1056,7 +1056,7 @@ declare global {
          * you'll get this event. The object is the ParseObject which is created.
          *
          * ```
-         * subscription.on('create', (object: Parse.Object) => {});
+         * subscription.on('create', (object: Object) => {});
          * ```
          * ---
          * `update` event - when an existing ParseObject which fulfills the ParseQuery you subscribe
@@ -1065,7 +1065,7 @@ declare global {
          * Its content is the latest value of the ParseObject.
          *
          * ```
-         * subscription.on('update', (object: Parse.Object) => {});
+         * subscription.on('update', (object: Object) => {});
          * ```
          * ---
          * `enter` event - when an existing ParseObject's old value doesn't fulfill the ParseQuery
@@ -1073,7 +1073,7 @@ declare global {
          * ParseObject which enters the ParseQuery. Its content is the latest value of the ParseObject.
          *
          * ```
-         * subscription.on('enter', (object: Parse.Object) => {});
+         * subscription.on('enter', (object: Object) => {});
          * ```
          * ---
          * `update` event - when an existing ParseObject's old value fulfills the ParseQuery but its new value
@@ -1081,14 +1081,14 @@ declare global {
          * which leaves the ParseQuery. Its content is the latest value of the ParseObject.
          *
          * ```
-         * subscription.on('leave', (object: Parse.Object) => {});
+         * subscription.on('leave', (object: Object) => {});
          * ```
          * ---
          * `delete` event - when an existing ParseObject which fulfills the ParseQuery is deleted, you'll
          * get this event. The object is the ParseObject which is deleted.
          *
          * ```
-         * subscription.on('delete', (object: Parse.Object) => {});
+         * subscription.on('delete', (object: Object) => {});
          * ```
          * ---
          * `close` event - when the client loses the WebSocket connection to the LiveQuery
@@ -1125,7 +1125,7 @@ declare global {
          * (source : https://github.com/parse-community/Parse-SDK-JS/blob/8115e959533d1676fe5e5551bc81888b21fc12ef/src/ParseLiveQuery.js)
          * https://docs.parseplatform.org/js/guide/#websocket-status
          */
-         namespace LiveQuery {
+        namespace LiveQuery {
             function on(
                 event: 'open' | 'close',
                 /** When we establish ('open') or lose the WebSocket connection to the LiveQuery server, you’ll get this event */
@@ -1147,7 +1147,7 @@ declare global {
          *
          * <p>Roles must have a name (which cannot be changed after creation of the
          * role), and must specify an ACL.</p>
-         * A Parse.Role is a local representation of a role persisted to the Parse
+         * A Role is a local representation of a role persisted to the Parse
          * cloud.
          */
         interface Role<T extends Attributes = Attributes> extends Object<T> {
@@ -1158,7 +1158,7 @@ declare global {
         }
         interface RoleConstructor extends ObjectStatic<Role> {
             new <T extends Attributes>(name: string, acl: ACL): Role<Partial<T>>;
-            new (name: string, acl: ACL): Role;
+            new(name: string, acl: ACL): Role;
         }
         const Role: RoleConstructor;
 
@@ -1177,7 +1177,7 @@ declare global {
         }
         interface SessionConstructor extends ObjectStatic<Session> {
             new <T extends Attributes>(attributes: T): Session<T>;
-            new (): Session;
+            new(): Session;
 
             current(): Promise<Session>;
         }
@@ -1185,9 +1185,9 @@ declare global {
 
         /**
          *
-         * <p>A Parse.User object is a local representation of a user persisted to the
-         * Parse cloud. This class is a subclass of a Parse.Object, and retains the
-         * same functionality of a Parse.Object, but also extends it with various
+         * <p>A User object is a local representation of a user persisted to the
+         * Parse cloud. This class is a subclass of a Object, and retains the
+         * same functionality of a Object, but also extends it with various
          * user specific methods, like authentication, signing up, and validation of
          * uniqueness.</p>
          */
@@ -1218,7 +1218,7 @@ declare global {
         }
         interface UserConstructor extends ObjectStatic<User> {
             new <T extends Attributes>(attributes: T): User<T>;
-            new (attributes?: Attributes): User;
+            new(attributes?: Attributes): User;
 
             allowCustomUserClass(isAllowed: boolean): void;
             become<T extends User>(sessionToken: string, options?: UseMasterKeyOption): Promise<T>;
@@ -1268,15 +1268,15 @@ declare global {
         }
 
         /**
-         * A Parse.Schema object is for handling schema data from Parse.
+         * A Schema object is for handling schema data from
          * All the schemas methods require MasterKey.
          *
          * @param className Parse Class string
          *
-         * https://parseplatform.org/Parse-SDK-JS/api/master/Parse.Schema.html
+         * https://parseplatform.org/Parse-SDK-JS/api/master/Schema.html
          *
          * ```
-         * const schema = new Parse.Schema('MyClass');
+         * const schema = new Schema('MyClass');
          * schema.addString('field');
          * schema.addIndex('index_name', { field: 1 });
          * schema.save();
@@ -1425,17 +1425,17 @@ declare global {
 
             interface FieldOptions<
                 T extends
-                    | string
-                    | number
-                    | boolean
-                    | Date
-                    | File
-                    | GeoPoint
-                    | Polygon
-                    | any[]
-                    | object
-                    | Pointer
-                    | Relation = any,
+                | string
+                | number
+                | boolean
+                | Date
+                | File
+                | GeoPoint
+                | Polygon
+                | any[]
+                | object
+                | Pointer
+                | Relation = any,
             > {
                 required?: boolean | undefined;
                 defaultValue?: T | undefined;
@@ -1589,8 +1589,8 @@ declare global {
             interface AfterSaveRequest<T = Object> extends TriggerRequest<T> {
                 context: Record<string, unknown>;
             }
-            interface AfterDeleteRequest<T = Object> extends TriggerRequest<T> {} // tslint:disable-line no-empty-interface
-            interface BeforeDeleteRequest<T = Object> extends TriggerRequest<T> {} // tslint:disable-line no-empty-interface
+            interface AfterDeleteRequest<T = Object> extends TriggerRequest<T> { } // tslint:disable-line no-empty-interface
+            interface BeforeDeleteRequest<T = Object> extends TriggerRequest<T> { } // tslint:disable-line no-empty-interface
             interface BeforeSaveRequest<T = Object> extends TriggerRequest<T> {
                 context: Record<string, unknown>;
             }
@@ -1621,64 +1621,211 @@ declare global {
                 objects: T[];
             }
 
-            function afterDelete<T extends Object = Object>(
-                arg1: { new (): T } | string,
-                func?: (request: AfterDeleteRequest<T>) => Promise<void> | void,
-                validator?: Validator | ((request: FunctionRequest) => any),
-            ): void;
-            function afterSave<T extends Object = Object>(
-                arg1: { new (): T } | string,
-                func?: (request: AfterSaveRequest<T>) => Promise<void> | void,
-                validator?: Validator | ((request: FunctionRequest) => any),
-            ): void;
-            function beforeDelete<T extends Object = Object>(
-                arg1: { new (): T } | string,
-                func?: (request: BeforeDeleteRequest<T>) => Promise<void> | void,
-                validator?: Validator | ((request: FunctionRequest) => any),
-            ): void;
-            function beforeSave<T extends Object = Object>(
-                arg1: { new (): T } | string,
-                func?: (request: BeforeSaveRequest<T>) => Promise<void> | void,
-                validator?: Validator | ((request: FunctionRequest) => any),
-            ): void;
-            function beforeFind<T extends Object = Object>(
-                arg1: { new (): T } | string,
-                func?: (request: BeforeFindRequest<T>) => Promise<Query<T>> | Promise<void> | Query<T> | void,
-                validator?: Validator | ((request: FunctionRequest) => any),
-            ): void;
-            function afterFind<T extends Object = Object>(
-                arg1: { new (): T } | string,
-                func?: (request: AfterFindRequest<T>) => any,
-                validator?: Validator | ((request: FunctionRequest) => any),
-            ): void;
+            interface ConnectTriggerRequest {
+                /**
+                 * If set, the installationId triggering the request.
+                 */
+                installationId?: string;
 
-            function beforeLogin(func?: (request: TriggerRequest<User>) => PromiseLike<void> | void): void;
-            function afterLogin(
-                func?: (request: TriggerRequest<User>) => PromiseLike<void> | void,
-                validator?: Validator | ((request: FunctionRequest) => any),
-            ): void;
-            function afterLogout(
-                func?: (request: TriggerRequest<Session>) => PromiseLike<void> | void,
-                validator?: Validator | ((request: FunctionRequest) => any),
-            ): void;
+                /**
+                 * If true, means the master key was used.
+                 */
+                useMasterKey?: boolean;
 
-            function beforeSaveFile(
-                func?: (request: FileTriggerRequest) => PromiseLike<File> | void,
-                validator?: Validator | ((request: FunctionRequest) => any),
-            ): void;
-            function afterSaveFile(
-                func?: (request: FileTriggerRequest) => PromiseLike<void> | void,
-                validator?: Validator | ((request: FunctionRequest) => any),
-            ): void;
-            function beforeDeleteFile(
-                func?: (request: FileTriggerRequest) => PromiseLike<void> | void,
-                validator?: Validator | ((request: FunctionRequest) => any),
-            ): void;
-            function afterDeleteFile(
-                func?: (request: FileTriggerRequest) => PromiseLike<void> | void,
-                validator?: Validator | ((request: FunctionRequest) => any),
-            ): void;
+                /**
+                 * If set, the user that made the request.
+                 */
+                user?: User;
 
+                /**
+                 * The number of clients connected.
+                 */
+                clients?: number;
+
+                /**
+                 * The number of subscriptions connected.
+                 */
+                subscriptions?: number;
+
+                /**
+                 * If set, the session of the user that made the request.
+                 */
+                sessionToken?: string;
+            }
+
+            interface OnLiveQueryEventTriggerRequest {
+                /**
+                 * The live query event that triggered the request.
+                 */
+                event?: string;
+
+                /**
+                 * The client associated with this event.
+                 */
+                client?: Client;
+
+                /**
+                 * If set, the session of the user that made the request.
+                 */
+                sessionToken?: string;
+
+                /**
+                 * If true, means the master key was used.
+                 */
+                useMasterKey?: boolean;
+
+                /**
+                 * If set, the installationId triggering the request.
+                 */
+                installationId?: string;
+
+                /**
+                 * The number of clients connected.
+                 */
+                clients?: number;
+
+                /**
+                 * The number of subscriptions connected.
+                 */
+                subscriptions?: number;
+
+                /**
+                 * The error in this event.
+                 */
+                error?: any;
+            }
+
+            interface LiveQueryEventTriggerRequest {
+                /**
+                 * If set, the installationId triggering the request.
+                 */
+                installationId?: string;
+
+                /**
+                 * If true, means the master key was used.
+                 */
+                useMasterKey?: boolean;
+
+                /**
+                 * If set, the user that made the request.
+                 */
+                user?: User;
+
+                /**
+                 * If set, the session of the user that made the request.
+                 */
+                sessionToken?: string;
+
+                /**
+                 * The live query event that triggered the request.
+                 */
+                event?: string;
+
+                /**
+                 * The object triggering the hook.
+                 */
+                object?: Object;
+
+                /**
+                 * If set, the object, as currently stored.
+                 */
+                original?: Object;
+
+                /**
+                 * The number of clients connected.
+                 */
+                clients?: number;
+
+                /**
+                 * The number of subscriptions connected.
+                 */
+                subscriptions?: number;
+
+                /**
+                 * If the LiveQuery event should be sent to the client. Set to false to prevent LiveQuery from pushing to the client.
+                 */
+                sendEvent?: boolean;
+            }
+
+            interface Message {
+                [attr: string]: any;
+            }
+
+            interface FlattenedObjectData {
+                [attr: string]: any;
+            }
+
+            class Client {
+                id: number;
+                parseWebSocket: any;
+                hasMasterKey: boolean;
+                sessionToken: string;
+                installationId: string;
+                userId: string;
+                roles: string[];
+                subscriptionInfos: Object;
+                pushConnect: Function;
+                pushSubscribe: Function;
+                pushUnsubscribe: Function;
+                pushCreate: Function;
+                pushEnter: Function;
+                pushUpdate: Function;
+                pushDelete: Function;
+                pushLeave: Function;
+
+                constructor(
+                    id: number,
+                    parseWebSocket: any,
+                    hasMasterKey: boolean,
+                    sessionToken: string,
+                    installationId: string
+                );
+
+                static pushResponse(parseWebSocket: any, message: Message): void;
+
+                static pushError(
+                    parseWebSocket: any,
+                    code: number,
+                    error: string,
+                    reconnect: boolean,
+                    requestId: number | undefined
+                ): void;
+
+                addSubscriptionInfo(requestId: number, subscriptionInfo: any): void;
+
+                getSubscriptionInfo(requestId: number): any;
+
+                deleteSubscriptionInfo(requestId: number): void;
+
+                _pushEvent(type: string): Function;
+
+                _toJSONWithFields(parseObjectJSON: any, fields: any): FlattenedObjectData;
+            }
+
+            /**
+             * Defines a Cloud Function.
+             *
+             * **Available in Cloud Code only.**
+             *
+             * ```
+             * Cloud.define('functionName', (request) => {
+             *   // code here
+             * }, (request) => {
+             *   // validation code here
+             * });
+             *
+             * Cloud.define('functionName', (request) => {
+             *   // code here
+             * }, { ...validationObject });
+             * ```
+             *
+             * @param name The name of the Cloud Function
+             * @param data The Cloud Function to register. This function can be an async
+             * function and should take one parameter a {@link Cloud.FunctionRequest}.
+             * @param validator An optional function to help validating cloud code. This
+             * function can be an async function and should take one parameter a
+             * {@link Cloud.FunctionRequest}, or a {@link Cloud.ValidatorObject}.
+             */
             function define(
                 name: string,
                 func: (request: FunctionRequest) => any,
@@ -1694,9 +1841,535 @@ declare global {
                 func: (request: FunctionRequest<Parameters<T>[0]>) => Promise<ReturnType<T>> | ReturnType<T>,
                 validator?: Validator | ((request: FunctionRequest) => any),
             ): void;
+
+            /**
+             *
+             * Registers a before save function.
+             *
+             * **Available in Cloud Code only.**
+             *
+             * If you want to use beforeSave for a predefined class in the Parse
+             * JavaScript SDK (e.g. {@link User} or {@link File}), you should pass the
+             * class itself and not the String for arg1.
+             *
+             * ```
+             * Cloud.beforeSave('MyCustomClass', (request) => {
+             *   // code here
+             * }, (request) => {
+             *   // validation code here
+             * });
+             *
+             * Cloud.beforeSave(User, (request) => {
+             *   // code here
+             * }, { ...validationObject })
+             * ```
+             *
+             * @param arg1 The Object subclass to register the after save function for.
+             * This can instead be a String that is the className of the subclass.
+             * @param func The function to run before a save. This function can be async
+             * and should take one parameter a {@link Cloud.TriggerRequest};
+             * @param validator An optional function to help validating cloud code.
+             * This function can be an async function and should take one parameter
+             * a {@link Cloud.TriggerRequest}, or a {@link Cloud.ValidatorObject}.
+             */
+            function beforeSave<T extends Object = Object>(
+                arg1: { new(): T } | string,
+                func?: (request: BeforeSaveRequest<T>) => Promise<void> | void,
+                validator?: Validator | ((request: FunctionRequest) => any),
+            ): void;
+
+            /**
+             * Registers a before delete function.
+             *
+             * **Available in Cloud Code only.**
+             *
+             * If you want to use beforeDelete for a predefined class in the Parse
+             * JavaScript SDK (e.g. {@link User} or {@link File}), you should pass
+             * the class itself and not the String for arg1.
+             * ```
+             * Cloud.beforeDelete('MyCustomClass', (request) => {
+             *   // code here
+             * }, (request) => {
+             *   // validation code here
+             * });
+             *
+             * Cloud.beforeDelete(User, (request) => {
+             *   // code here
+             * }, { ...validationObject })
+             * ```
+             *
+             * @param arg1 The Object subclass to register the before delete
+             * function for. This can instead be a String that is the className of
+             * the subclass.
+             * @param func The function to run before a delete. This function can
+             * be async and should take one parameter, a {@link Cloud.TriggerRequest}.
+             * @param validator An optional function to help validating cloud code.
+             * This function can be an async function and should take one parameter
+             * a {@link Cloud.TriggerRequest}, or a {@link Cloud.ValidatorObject}.
+             */
+            function beforeDelete<T extends Object = Object>(
+                arg1: { new(): T } | string,
+                func?: (request: BeforeDeleteRequest<T>) => Promise<void> | void,
+                validator?: Validator | ((request: FunctionRequest) => any),
+            ): void;
+
+            /**
+             *
+             * Registers the before login function.
+             *
+             * **Available in Cloud Code only.**
+             *
+             * This function provides further control
+             * in validating a login attempt. Specifically,
+             * it is triggered after a user enters
+             * correct credentials (or other valid authData),
+             * but prior to a session being generated.
+             *
+             * ```
+             * Cloud.beforeLogin((request) => {
+             *   // code here
+             * })
+             *
+             * ```
+             *
+             * @param func The function to run before a login. This function
+             * can be async and should take one parameter a
+             * {@link Cloud.TriggerRequest};
+             */
+            function beforeLogin(
+                func?: (request: TriggerRequest<User>) => PromiseLike<void> | void
+            ): void;
+
+            /**
+             *
+             * Registers the after login function.
+             *
+             * **Available in Cloud Code only.**
+             *
+             * This function is triggered after a user logs in successfully,
+             * and after a _Session object has been created.
+             *
+             * ```
+             * Cloud.afterLogin((request) => {
+             *   // code here
+             * });
+             * ```
+             *
+             * @param func The function to run after a login. This function can
+             * be async and should take one parameter a {@link Cloud.TriggerRequest};
+             */
+            function afterLogin(
+                func?: (request: TriggerRequest<User>) => PromiseLike<void> | void,
+                validator?: Validator | ((request: FunctionRequest) => any),
+            ): void;
+
+            /**
+             *
+             * Registers the after logout function.
+             *
+             * **Available in Cloud Code only.**
+             *
+             * This function is triggered after a user logs out.
+             *
+             * ```
+             * Cloud.afterLogout((request) => {
+             *   // code here
+             * });
+             * ```
+             *
+             * @param func The function to run after a logout. This function
+             * can be async and should take one parameter a
+             * {@link Cloud.TriggerRequest};
+             */
+            function afterLogout(
+                func?: (request: TriggerRequest<Session>) => PromiseLike<void> | void,
+                validator?: Validator | ((request: FunctionRequest) => any),
+            ): void;
+
+            /**
+             * Registers an after save function.
+             *
+             * **Available in Cloud Code only.**
+             *
+             * If you want to use afterSave for a predefined class in the
+             * Parse JavaScript SDK (e.g. {@link User} or {@link File}),
+             * you should pass the class itself and not the String for arg1.
+             *
+             * ```
+             * Cloud.afterSave('MyCustomClass', async function(request) {
+             *   // code here
+             * }, (request) => {
+             *   // validation code here
+             * });
+             *
+             * Cloud.afterSave(User, async function(request) {
+             *   // code here
+             * }, { ...validationObject });
+             * ```
+             *
+             * @param arg1 The Object subclass to register the after save
+             * function for. This can instead be a String that is the
+             * className of the subclass.
+             * @param func The function to run after a save. This function
+             * can be an async function and should take just one parameter,
+             * {@link Cloud.TriggerRequest}.
+             * @param validator An optional function to help validating
+             * cloud code. This function can be an async function and
+             * should take one parameter a {@link Cloud.TriggerRequest},
+             * or a {@link Cloud.ValidatorObject}.
+             */
+            function afterSave<T extends Object = Object>(
+                arg1: { new(): T } | string,
+                func?: (request: AfterSaveRequest<T>) => Promise<void> | void,
+                validator?: Validator | ((request: FunctionRequest) => any),
+            ): void;
+
+            /**
+             * Registers an after delete function.
+             *
+             * **Available in Cloud Code only.**
+             *
+             * If you want to use afterDelete for a predefined class
+             * in the Parse JavaScript SDK (e.g. {@link User} or
+             * {@link File}), you should pass the class itself and not
+             * the String for arg1.
+             * ```
+             * Cloud.afterDelete('MyCustomClass', async (request) => {
+             *   // code here
+             * }, (request) => {
+             *   // validation code here
+             * });
+             *
+             * Cloud.afterDelete(User, async (request) => {
+             *   // code here
+             * }, { ...validationObject });
+             * ```
+             *
+             * @param arg1 The Object subclass to register the after delete
+             * function for. This can instead be a String that is the
+             * className of the subclass.
+             * @param func The function to run after a delete. This function
+             * can be async and should take just one parameter,
+             * {@link Cloud.TriggerRequest}.
+             * @param validator An optional function to help validating
+             * cloud code. This function can be an async function and
+             * should take one parameter a {@link Cloud.TriggerRequest},
+             * or a {@link Cloud.ValidatorObject}.
+             */
+            function afterDelete<T extends Object = Object>(
+                arg1: { new(): T } | string,
+                func?: (request: AfterDeleteRequest<T>) => Promise<void> | void,
+                validator?: Validator | ((request: FunctionRequest) => any),
+            ): void;
+
+            /**
+             * Registers a before find function.
+             *
+             * **Available in Cloud Code only.**
+             *
+             * If you want to use beforeFind for a predefined class in the
+             * Parse JavaScript SDK (e.g. {@link User} or {@link File}),
+             * you should pass the class itself and not the String for arg1.
+             * ```
+             * Cloud.beforeFind('MyCustomClass', async (request) => {
+             *   // code here
+             * }, (request) => {
+             *   // validation code here
+             * });
+             *
+             * Cloud.beforeFind(User, async (request) => {
+             *   // code here
+             * }, { ...validationObject });
+             * ```
+             *
+             * @param arg1 The Object subclass to register the before find
+             * function for. This can instead be a String that is the
+             * className of the subclass.
+             * @param func The function to run before a find. This function
+             * can be async and should take just one parameter,
+             * {@link Cloud.BeforeFindRequest}.
+             * @param validator An optional function to help validating
+             * cloud code. This function can be an async function and
+             * should take one parameter a {@link Cloud.BeforeFindRequest},
+             * or a {@link Cloud.ValidatorObject}.
+             */
+            function beforeFind<T extends Object = Object>(
+                arg1: { new(): T } | string,
+                func?: (request: BeforeFindRequest<T>) => Promise<Query<T>> | Promise<void> | Query<T> | void,
+                validator?: Validator | ((request: FunctionRequest) => any),
+            ): void;
+
+            /**
+             * Registers an after find function.
+             *
+             * **Available in Cloud Code only.**
+             *
+             * If you want to use afterFind for a predefined class in
+             * the Parse JavaScript SDK (e.g. {@link User} or {@link File}),
+             * you should pass the class itself and not the String for arg1.
+             * ```
+             * Cloud.afterFind('MyCustomClass', async (request) => {
+             *   // code here
+             * }, (request) => {
+             *   // validation code here
+             * });
+             *
+             * Cloud.afterFind(User, async (request) => {
+             *   // code here
+             * }, { ...validationObject });
+             * ```
+             *
+             * @param arg1 The Object subclass to register the after find function
+             * for. This can instead be a String that is the className of the
+             * subclass.
+             * @param func The function to run before a find. This function
+             * an be async and should take just one parameter,
+             * {@link Cloud.AfterFindRequest}.
+             * @param validator An optional function to help validating
+             * cloud code. This function can be an async function and
+             * should take one parameter a {@link Cloud.AfterFindRequest},
+             * or a {@link Cloud.ValidatorObject}.
+             */
+            function afterFind<T extends Object = Object>(
+                arg1: { new(): T } | string,
+                func?: (request: AfterFindRequest<T>) => any,
+                validator?: Validator | ((request: FunctionRequest) => any),
+            ): void;
+
+            /**
+             * Registers a before save file function.
+             *
+             * **Available in Cloud Code only.**
+             *
+             * ```
+             * Cloud.beforeSaveFile(async (request) => {
+             *   // code here
+             * }, (request) => {
+             *   // validation code here
+             * });
+             *
+             * Cloud.beforeSaveFile(async (request) => {
+             *   // code here
+             * }, { ...validationObject });
+             * ```
+             *
+             * @deprecated
+             * @param func The function to run before saving a file. This
+             * function can be async and should take just one parameter,
+             * {@link Cloud.FileTriggerRequest}.
+             * @param validator An optional function to help validating
+             * cloud code. This function can be an async function and
+             * should take one parameter a {@link Cloud.FileTriggerRequest},
+             * or a {@link Cloud.ValidatorObject}.
+             */
+            function beforeSaveFile(
+                func?: (request: FileTriggerRequest) => PromiseLike<File> | void,
+                validator?: Validator | ((request: FunctionRequest) => any),
+            ): void;
+
+            /**
+             * Registers an after save file function.
+             *
+             * **Available in Cloud Code only.**
+             *
+             * ```
+             * Cloud.afterSaveFile(async (request) => {
+             *   // code here
+             * }, (request) => {
+             *   // validation code here
+             * });
+             *
+             * Cloud.afterSaveFile(async (request) => {
+             *  // code here
+             * }, { ...validationObject });
+             * ```
+             *
+             * @deprecated
+             * @param func The function to run after saving a file. This
+             * function can be async and should take just one parameter,
+             * {@link Cloud.FileTriggerRequest}.
+             * @param validator An optional function to help validating
+             * cloud code. This function can be an async function and
+             * should take one parameter a {@link Cloud.FileTriggerRequest},
+             * or a {@link Cloud.ValidatorObject}.
+             */
+            function afterSaveFile(
+                func?: (request: FileTriggerRequest) => PromiseLike<void> | void,
+                validator?: Validator | ((request: FunctionRequest) => any),
+            ): void;
+
+            /**
+             * Registers a before delete file function.
+             *
+             * **Available in Cloud Code only.**
+             *
+             * ```
+             * Cloud.beforeDeleteFile(async (request) => {
+             *   // code here
+             * }, (request) => {
+             *   // validation code here
+             * });
+             *
+             * Cloud.beforeDeleteFile(async (request) => {
+             *   // code here
+             * }, { ...validationObject });
+             * ```
+             *
+             * @deprecated
+             * @param func The function to run before deleting a file. This
+             * function can be async and should take just one parameter,
+             * {@link Cloud.FileTriggerRequest}.
+             * @param validator An optional function to help validating
+             * cloud code. This function can be an async function and
+             * should take one parameter a {@link Cloud.FileTriggerRequest},
+             * or a {@link Cloud.ValidatorObject}.
+             */
+            function beforeDeleteFile(
+                func?: (request: FileTriggerRequest) => PromiseLike<void> | void,
+                validator?: Validator | ((request: FunctionRequest) => any),
+            ): void;
+
+            /**
+             * Registers an after delete file function.
+             *
+             * **Available in Cloud Code only.**
+             *
+             * ```
+             * Cloud.afterDeleteFile(async (request) => {
+             *   // code here
+             * }, (request) => {
+             *   // validation code here
+             * });
+             *
+             * Cloud.afterDeleteFile(async (request) => {
+             *   // code here
+             * }, { ...validationObject });
+             * ```
+             *
+             * @deprecated
+             * @param func The function to after before deleting a file. This
+             * function can be async and should take just one parameter,
+             * {@link Cloud.FileTriggerRequest}.
+             * @param validator An optional function to help validating
+             * cloud code. This function can be an async function and should
+             * take one parameter a {@link Cloud.FileTriggerRequest}, or a
+             * {@link Cloud.ValidatorObject}.
+             */
+            function afterDeleteFile(
+                func?: (request: FileTriggerRequest) => PromiseLike<void> | void,
+                validator?: Validator | ((request: FunctionRequest) => any),
+            ): void;
+
+            /**
+             * Registers a before live query server connect function.
+             *
+             * **Available in Cloud Code only.**
+             *
+             * ```
+             * Cloud.beforeConnect(async (request) => {
+             *   // code here
+             * }, (request) => {
+             *   // validation code here
+             * });
+             *
+             * Cloud.beforeConnect(async (request) => {
+             *   // code here
+             * }, { ...validationObject });
+             * ```
+             *
+             * @param func The function to before connection is made. This
+             * function can be async and should take just one parameter,
+             * {@link Cloud.ConnectTriggerRequest}.
+             * @param validator An optional function to help validating
+             * cloud code. This function can be an async function and should
+             * take one parameter a {@link Cloud.ConnectTriggerRequest},
+             * or a {@link Cloud.ValidatorObject}.
+             */
+            function beforeConnect(
+                func?: (request: ConnectTriggerRequest) => PromiseLike<void> | void,
+                validator?: Validator | ((request: ConnectTriggerRequest) => any),
+            ): void;
+
+            /**
+             * Sends an email through the Parse Server mail adapter.
+             *
+             * **Available in Cloud Code only.**
+             * **Requires a mail adapter to be configured for Parse Server.**
+             *
+             * ```
+             * Cloud.sendEmail({
+             *   from: 'Example <test@example.com>',
+             *   to: 'contact@example.com',
+             *   subject: 'Test email',
+             *   text: 'This email is a test.'
+             * });
+             * ```
+             *
+             * @param data The object of the mail data to send.
+             */
+            function sendEmail(
+                options: {
+                    from: string | undefined,
+                    to: string,
+                    subject: string,
+                    text: string,
+                }
+            ): void;
+
+            /**
+             * Registers a before live query subscription function.
+             *
+             * **Available in Cloud Code only.**
+             *
+             * If you want to use beforeSubscribe for a predefined class in the Parse JavaScript SDK (e.g. {@link User} or {@link File}), you should pass the class itself and not the String for arg1.
+             * ```
+             * Cloud.beforeSubscribe('MyCustomClass', (request) => {
+             *   // code here
+             * }, (request) => {
+             *   // validation code here
+             * });
+             *
+             * Cloud.beforeSubscribe(User, (request) => {
+             *   // code here
+             * }, { ...validationObject });
+             * ```
+             *
+             * @param arg1 The Object subclass to register the before
+             * subscription function for. This can instead be a String
+             * that is the className of the subclass.
+             * @param func The function to run before a subscription.
+             * This function can be async and should take one parameter,
+             * a {@link Cloud.TriggerRequest}.
+             * @param validator An optional function to help validating
+             * cloud code. This function can be an async function and
+             * should take one parameter a {@link Cloud.TriggerRequest},
+             * or a {@link Cloud.ValidatorObject}.
+             */
+            function beforeSubscribe(
+                parseClass: string | Object,
+                func?: (request: TriggerRequest) => PromiseLike<void> | void,
+                validator?: Validator | ((request: TriggerRequest) => any),
+            ): void;
+
+            /**
+             * The onLiveQueryEvent trigger can log events triggered,
+             * number of clients connected, number of subscriptions and
+             * errors.
+             */
+            function onLiveQueryEvent(
+                func?: (request: OnLiveQueryEventTriggerRequest) => PromiseLike<void> | void,
+            ): void;
+
+            function afterLiveQueryEvent(
+                parseClass: string | Object,
+                func?: (request: LiveQueryEventTriggerRequest) => PromiseLike<void> | void,
+                validator?: Validator | ((request: LiveQueryEventTriggerRequest) => any),
+            ): void;
+
             /**
              * Gets data for the current set of cloud jobs.
-             * @returns A promise that will be resolved with the result of the function.
+             * @returns A promise that will be resolved with the result
+             * of the function.
              */
             function getJobsData(): Promise<Object>;
             /**
@@ -1723,7 +2396,7 @@ declare global {
             function startJob(jobName: string, data: any): Promise<string>;
             function useMasterKey(): void;
 
-            interface RunOptions extends SuccessFailureOptions, ScopeOptions {}
+            interface RunOptions extends SuccessFailureOptions, ScopeOptions { }
 
             /**
              * To use this Cloud Module in Cloud Code, you must require 'buffer' in your JavaScript file.
@@ -1734,9 +2407,11 @@ declare global {
             interface HTTPOptions {
                 /**
                  * The body of the request.
-                 * If it is a JSON object, then the Content-Type set in the headers must be application/x-www-form-urlencoded or application/json.
+                 * If it is a JSON object, then the Content-Type set in the headers
+                 * must be application/x-www-form-urlencoded or application/json.
                  * You can also set this to a Buffer object to send raw bytes.
-                 * If you use a Buffer, you should also set the Content-Type header explicitly to describe what these bytes represent.
+                 * If you use a Buffer, you should also set the Content-Type header
+                 * explicitly to describe what these bytes represent.
                  */
                 body?: string | Buffer | object | undefined;
                 /**
@@ -1747,10 +2422,10 @@ declare global {
                  * The headers for the request.
                  */
                 headers?:
-                    | {
-                          [headerName: string]: string | number | boolean;
-                      }
-                    | undefined;
+                | {
+                    [headerName: string]: string | number | boolean;
+                }
+                | undefined;
                 /**
                  * The method of the request (i.e GET, POST, etc).
                  */
@@ -1784,19 +2459,19 @@ declare global {
             /**
              * Add object to queue with save operation.
              *
-             * @param object Parse.Object to be saved eventually
-             * @param serverOptions See {@link https://parseplatform.org/Parse-SDK-JS/api/master/Parse.Object.html#save Parse.Object.save} options.
+             * @param object Object to be saved eventually
+             * @param serverOptions See {@link https://parseplatform.org/Parse-SDK-JS/api/master/Object.html#save Object.save} options.
              * @returns A promise that is fulfilled if object is added to queue.
-             * @see Parse.Object#saveEventually
+             * @see Object#saveEventually
              */
             function save(object: Object, serverOptions?: Object.SaveOptions): Promise<void>;
             /**
              * Add object to queue with save operation.
              *
-             * @param object Parse.Object to be destroyed eventually
-             * @param serverOptions See {@link https://parseplatform.org/Parse-SDK-JS/api/master/Parse.Object.html#destroy Parse.Object.destroy} options
+             * @param object Object to be destroyed eventually
+             * @param serverOptions See {@link https://parseplatform.org/Parse-SDK-JS/api/master/Object.html#destroy Object.destroy} options
              * @returns A promise that is fulfilled if object is added to queue.
-             * @see Parse.Object#destroyEventually
+             * @see Object#destroyEventually
              */
             function destroy(object: Object, serverOptions?: RequestOptions): Promise<void>;
             // function store(data: any): Promise<void>;
@@ -1900,14 +2575,14 @@ declare global {
         }
 
         /**
-         * A Parse.Op is an atomic operation that can be applied to a field in a
-         * Parse.Object. For example, calling <code>object.set("foo", "bar")</code>
-         * is an example of a Parse.Op.Set. Calling <code>object.unset("foo")</code>
-         * is a Parse.Op.Unset. These operations are stored in a Parse.Object and
+         * A Op is an atomic operation that can be applied to a field in a
+         * Object. For example, calling <code>object.set("foo", "bar")</code>
+         * is an example of a Op.Set. Calling <code>object.unset("foo")</code>
+         * is a Op.Unset. These operations are stored in a Object and
          * sent to the server as part of <code>object.save()</code> operations.
-         * Instances of Parse.Op should be immutable.
+         * Instances of Op should be immutable.
          *
-         * You should not create subclasses of Parse.Op or instantiate Parse.Op
+         * You should not create subclasses of Op or instantiate Op
          * directly.
          */
         namespace Op {
@@ -1972,8 +2647,8 @@ declare global {
         }
 
         /**
-         * Call this method first to set up your authentication tokens for Parse.
-         * You can get your keys from the Data Browser on parse.com.
+         * Call this method first to set up your authentication tokens for
+         * You can get your keys from the Data Browser on com.
          * @param applicationId Your Parse Application ID.
          * @param javaScriptKey (optional) Your Parse JavaScript Key (Not needed for parse-server)
          * @param masterKey (optional) Your Parse Master Key. (Node.js only!)
@@ -2015,7 +2690,7 @@ declare global {
 
         /**
          * Call this method to set your LocalDatastoreStorage engine
-         * If using React-Native use {@link Parse.setAsyncStorage Parse.setAsyncStorage()}
+         * If using React-Native use {@link setAsyncStorage setAsyncStorage()}
          * @param controller a data storage.
          */
         function setLocalDatastoreController(controller: any): void;
